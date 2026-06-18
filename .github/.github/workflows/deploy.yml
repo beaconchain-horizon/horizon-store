@@ -1,0 +1,39 @@
+# GitHub Actions workflow for Horizon Store
+# Deploys to GitHub Pages and IPFS (Filebase) on every push to main branch
+
+name: Deploy Horizon Store
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages & IPFS
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: gh-pages
+          force_orphan: true
+
+      - name: Deploy to IPFS (Filebase)
+        uses: ipshipyard/ipfs-deploy-action@v1
+        with:
+          path: ./
+          service: filebase
+          access_key: ${{ secrets.FILEBASE_ACCESS_KEY }}
+          secret_key: ${{ secrets.FILEBASE_SECRET_KEY }}
+          bucket: horizon-store
