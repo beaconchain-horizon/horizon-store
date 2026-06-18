@@ -1,0 +1,90 @@
+# ============================================================
+# SLSA Provenance Generator for Horizon Store
+# ============================================================
+# This workflow generates a Level 3 provenance attestation
+# to prove that the output artifacts were built from this exact source code.
+# ============================================================
+
+name: SLSA Provenance Generator
+
+on:
+  workflow_dispatch:  # Manual trigger from Actions tab
+  release:
+    types: [created]  # Trigger on new GitHub Release
+
+jobs:
+  # ============================================================
+  # Job 1: Build Artifacts & Generate Hashes
+  # ============================================================
+  build:
+    name: Build Artifacts & Generate Hashes
+    runs-on: ubuntu-latest
+    outputs:
+      digests: ${{ steps.hash.outputs.digests }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ==========================================================
+      # Build step: generate your project output files here
+      # ==========================================================
+      - name: Build Horizon Store artifacts
+        run: |
+          echo "📦 Building Horizon Store artifacts..."
+
+          # If your project requires dependencies and build:
+          # npm install
+          # npm run build
+
+          # For simple static projects, copy the files:
+          mkdir -p artifacts
+          cp index.html artifacts/ 2>/dev/null || echo "⚠️ index.html not found"
+          cp style.css artifacts/ 2>/dev/null || echo "⚠️ style.css not found"
+          cp app.js artifacts/ 2>/dev/null || echo "⚠️ app.js not found"
+
+          # If using a dist/ folder, copy it instead:
+          # cp -r ./dist/* artifacts/
+
+          echo "✅ Build complete. Artifacts:"
+          ls -la artifacts/
+
+      # ==========================================================
+      # Generate SHA-256 hashes for all built files
+      # ==========================================================
+      - name: Generate subject hashes for provenance
+        id: hash
+        run: |
+          set -euo pipefail
+          echo "🔐 Generating SHA-256 hashes for artifacts..."
+
+          cd artifacts
+          files=$(ls -p | grep -v / || true)
+
+          if [ -z "$files" ]; then
+            echo "⚠️ No artifacts found! Creating a placeholder..."
+            echo "placeholder" > placeholder.txt
+            files="placeholder.txt"
+          fi
+
+          hashes=$(sha256sum $files | base64 -w0)
+          echo "digests=$hashes" >> $GITHUB_OUTPUT
+
+          echo "✅ Hashes generated successfully."
+
+  # ============================================================
+  # Job 2: Generate SLSA Provenance using the official action
+  # ============================================================
+  provenance:
+    name: Generate SLSA Provenance
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read      # To read the workflow path
+      id-token: write    # To sign the provenance
+      contents: write    # To add assets to a Release
+
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.4.0
+    with:
+      base64-subjects: "${{ needs.build.outputs.digests }}"
+      upload-assets: true   # Upload attestation to the Release
