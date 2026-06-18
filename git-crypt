@@ -1,0 +1,9 @@
+# First commit the .gitattributes file (important)
+git add .gitattributes
+git commit -m "Add git-crypt configuration"
+
+# Now add your sensitive file(s)
+git add postman_collection.json
+git commit -m "Add encrypted Postman collection"
+
+git push origin main
