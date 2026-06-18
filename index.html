@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Horizon Store | Decentralized Blockchain Marketplace</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Decentralized marketplace for blockchain tools, API licenses, and digital goods - Horizon Store" />
+    <meta name="keywords" content="blockchain, ethereum, web3, decentralized, marketplace, API, validator" />
+    <meta name="author" content="Beaconchain Horizon" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Horizon Store | Decentralized Blockchain Marketplace" />
+    <meta property="og:description" content="Buy and sell API licenses, digital goods, and freelance services with crypto" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://beaconchain-horizon.github.io/horizon-store/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>" />
+    
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0B0F1C;
+            color: #E8EDF5;
+            line-height: 1.6;
+        }
+        a { color: #00D4FF; text-decoration: none; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .btn--primary {
+            background: linear-gradient(135deg, #00D4FF, #7B61FF);
+            color: #fff;
+        }
+        .btn--primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
+        }
+        .btn--outline {
+            background: transparent;
+            color: #E8EDF5;
+            border: 2px solid #7B61FF;
+        }
+        .btn--outline:hover {
+            background: rgba(123, 97, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .btn--large { padding: 16px 40px; font-size: 18px; }
+        .btn--block { display: block; width: 100%; }
+
+        /* ===== HEADER ===== */
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            position: sticky;
+            top: 0;
+            background: rgba(11, 15, 28, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+        .header__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .logo__icon { font-size: 28px; }
+        .logo__highlight { color: #00D4FF; }
+        .nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        .nav__link {
+            color: #8892B0;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav__link:hover { color: #00D4FF; }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+        .hero__badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 100px;
+            background: rgba(0, 212, 255, 0.12);
+            color: #00D4FF;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        .hero__title {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero__highlight {
+            background: linear-gradient(135deg, #00D4FF, #7B61FF, #FF6B9D);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero__desc {
+            font-size: 20px;
+            color: #8892B0;
+            max-width: 640px;
+            margin: 0 auto 32px;
+        }
+        .hero__actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+        .hero__stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .stat__number {
+            display: block;
+            font-size: 32px;
+            font-weight: 700;
+            color: #00D4FF;
+        }
+        .stat__label {
+            font-size: 14px;
+            color: #8892B0;
+        }
+
+        /* ===== SECTION HEADER ===== */
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .section-subtitle {
+            color: #8892B0;
+            font-size: 18px;
+        }
+
+        /* ===== PRODUCTS ===== */
+        .products {
+            padding: 60px 0;
+        }
+        .products__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        .product-card {
+            background: rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: #7B61FF;
+            box-shadow: 0 12px 40px rgba(123, 97, 255, 0.15);
+        }
+        .product-card--featured {
+            border-color: #7B61FF;
+            background: rgba(123, 97, 255, 0.08);
+        }
+        .product-card__badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: linear-gradient(135deg, #FF6B9D, #7B61FF);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 100px;
+            text-transform: uppercase;
+        }
+        .product-card__title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .product-card__price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00D4FF;
+            margin-bottom: 16px;
+        }
+        .product-card__features {
+            list-style: none;
+            text-align: left;
+            margin: 16px 0 24px;
+            padding: 0;
+        }
+        .product-card__features li {
+            padding: 6px 0;
+            color: #C8D0E0;
+            font-size: 15px;
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 60px 0;
+            background: rgba(255,255,255,0.02);
+        }
+        .features__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+        }
+        .feature {
+            text-align: center;
+            padding: 32px 20px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+        .feature:hover {
+            border-color: #7B61FF;
+            background: rgba(123, 97, 255, 0.06);
+        }
+        .feature__icon { font-size: 40px; margin-bottom: 16px; display: block; }
+        .feature__title { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+        .feature__desc { color: #8892B0; font-size: 15px; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+            color: #8892B0;
+            font-size: 14px;
+        }
+        .footer a { color: #00D4FF; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header__inner { flex-direction: column; align-items: stretch; text-align: center; }
+            .nav { justify-content: center; flex-wrap: wrap; gap: 16px; }
+            .hero__title { font-size: 32px; }
+            .hero__desc { font-size: 17px; }
+            .hero__stats { gap: 24px; }
+            .stat__number { font-size: 24px; }
+            .section-title { font-size: 28px; }
+            .products__grid { grid-template-columns: 1fr; }
+            .features__grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="container header__inner">
+            <div class="logo">
+                <span class="logo__icon">🔭</span>
+                <span class="logo__text">Horizon <span class="logo__highlight">Store</span></span>
+            </div>
+            <nav class="nav">
+                <a href="#products" class="nav__link">Products</a>
+                <a href="#features" class="nav__link">Features</a>
+                <a href="https://github.com/beaconchain-horizon" target="_blank" class="nav__link">GitHub</a>
+            </nav>
+            <button id="connectWallet" class="btn btn--primary">Connect Wallet</button>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero__content">
+                <div class="hero__badge">⚡ Decentralized • Offline-First • Open Source</div>
+                <h1 class="hero__title">
+                    Decentralized Marketplace<br />
+                    <span class="hero__highlight">for Blockchain Tools</span>
+                </h1>
+                <p class="hero__desc">
+                    Buy and sell <strong>API licenses, digital goods, and freelance services</strong>
+                    with cryptocurrency — no mandatory KYC required.
+                </p>
+                <div class="hero__actions">
+                    <a href="#products" class="btn btn--primary btn--large">Explore Products</a>
+                    <a href="https://github.com/beaconchain-horizon" target="_blank" class="btn btn--outline btn--large">
+                        <span>🐙</span> GitHub
+                    </a>
+                </div>
+                <div class="hero__stats">
+                    <div class="stat">
+                        <span class="stat__number">100K+</span>
+                        <span class="stat__label">Validators</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__number">10/10</span>
+                        <span class="stat__label">Security Score</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__number">#3</span>
+                        <span class="stat__label">Global Rank</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PRODUCTS ===== -->
+    <section id="products" class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🛒 Products</h2>
+                <p class="section-subtitle">API licenses with competitive pricing, paid in crypto</p>
+            </div>
+            <div class="products__grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-card__badge">Popular</div>
+                    <h3 class="product-card__title">Basic</h3>
+                    <div class="product-card__price">0.002 ETH</div>
+                    <ul class="product-card__features">
+                        <li>✓ 100 requests / month</li>
+                        <li>✓ 24/7 support</li>
+                        <li>✓ Full documentation</li>
+                    </ul>
+                    <button class="btn btn--primary btn--block">Buy Now</button>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card product-card--featured">
+                    <h3 class="product-card__title">Pro</h3>
+                    <div class="product-card__price">0.015 ETH</div>
+                    <ul class="product-card__features">
+                        <li>✓ 1,000 requests / month</li>
+                        <li>✓ Priority support</li>
+                        <li>✓ Advanced API access</li>
+                        <li>✓ Merkle verification</li>
+                    </ul>
+                    <button class="btn btn--primary btn--block">Buy Now</button>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <h3 class="product-card__title">Enterprise</h3>
+                    <div class="product-card__price">0.1 ETH</div>
+                    <ul class="product-card__features">
+                        <li>✓ 10,000 requests / month</li>
+                        <li>✓ Dedicated support</li>
+                        <li>✓ Private server</li>
+                        <li>✓ Guaranteed SLA</li>
+                    </ul>
+                    <button class="btn btn--primary btn--block">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">✨ Key Features</h2>
+                <p class="section-subtitle">Why Horizon Store is the smart, secure choice</p>
+            </div>
+            <div class="features__grid">
+                <div class="feature">
+                    <span class="feature__icon">🔐</span>
+                    <h3 class="feature__title">Merkle Verification</h3>
+                    <p class="feature__desc">Purchase licenses with Merkle proofs — no central database needed</p>
+                </div>
+                <div class="feature">
+                    <span class="feature__icon">📴</span>
+                    <h3 class="feature__title">Offline-First</h3>
+                    <p class="feature__desc">All critical data is cached locally; works without internet</p>
+                </div>
+                <div class="feature">
+                    <span class="feature__icon">🔏</span>
+                    <h3 class="feature__title">Tamper-Proof</h3>
+                    <p class="feature__desc">Every page signed with SHA-256 fingerprint for integrity</p>
+                </div>
+                <div class="feature">
+                    <span class="feature__icon">⚡</span>
+                    <h3 class="feature__title">Scalable</h3>
+                    <p class="feature__desc">Supports 100K+ validators with virtual scrolling and caching</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <p>
+                © 2026 <strong>Beaconchain Horizon</strong> — Built with transparency and purpose.
+                <br />
+                <a href="https://github.com/beaconchain-horizon" target="_blank">GitHub</a> •
+                <a href="https://beaconchain-horizon.github.io/horizon-store/" target="_blank">Live Demo</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // Simple wallet connection placeholder
+        document.getElementById('connectWallet')?.addEventListener('click', function() {
+            if (typeof window.ethereum !== 'undefined') {
+                window.ethereum.request({ method: 'eth_requestAccounts' })
+                    .then(accounts => {
+                        alert('✅ Wallet connected: ' + accounts[0].slice(0, 6) + '...' + accounts[0].slice(-4));
+                    })
+                    .catch(err => {
+                        console.error('Connection error:', err);
+                        alert('❌ Failed to connect wallet. See console for details.');
+                    });
+            } else {
+                alert('⚠️ No Web3 wallet detected. Please install MetaMask or another Web3 wallet.');
+            }
+        });
+
+        // Product button placeholders
+        document.querySelectorAll('.product-card .btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const card = this.closest('.product-card');
+                const title = card?.querySelector('.product-card__title')?.textContent || 'Product';
+                alert(`🛒 "${title}" purchase flow will be implemented with smart contracts.`);
+            });
+        });
+
+        console.log('🔭 Horizon Store loaded successfully!');
+    </script>
+</body>
+</html>
